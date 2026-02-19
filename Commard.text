@@ -1,0 +1,88 @@
+//ใช้คำสั่งนี้ตรวจสอบเวอร์ชันของ docker
+docker -v
+
+//ตรวจสอบว่า docker ใช้งานได้ปกติ โดยการรัน container ตัวอย่างชื่อว่า hell-world
+docker run hello-world
+
+//ตรวจสอบสถานะ container ทั้งหมดที่กำลังทำงานในระบบ
+docker ps --all
+
+//ตรวจสอบรายการอิมเมจทั้งหมดในเครื่อง
+docker images
+
+//รัน container จากอิมเมจ busybox และใช้คำสั่ง ping เพื่อทดสอบการเชื่อมต่ออินเทอร์เน็ต
+docker run busybox ping google.com
+
+docker stop <container_id_or_name> //หยุด container ที่กำลังทำงานอยู่ โดยใช้ container_id ที่ได้จากคำสั่ง docker ps
+
+docker pull <image_name> //ดึงอิมเมจจาก Docker Hub หรือ registry อื่นๆ มาไว้ในเครื่องของเรา
+
+docker create busybox ping google.com //สร้าง container จากอิมเมจ busybox แต่ยังไม่เริ่มทำงาน
+
+docker start <container_id_or_name> //เริ่มต้น container ที่ถูกสร้างขึ้นมาแล้ว โดยใช้ container_id ที่ได้จากคำสั่ง docker create
+
+docker ps //ตรวจสอบสถานะ container ที่กำลังทำงานอยู่ในระบบ
+
+docker rm <container_id_or_name> //ลบ container ที่ไม่ต้องการ โดยใช้ container_id ที่ได้จากคำสั่ง docker ps --all
+
+docker system prune //ลบข้อมูลที่ไม่จำเป็นทั้งหมด เช่น container ที่หยุดทำงานแล้ว, อิมเมจที่ไม่ได้ใช้งาน, และ network ที่ไม่ได้ใช้งาน เพื่อเพิ่มพื้นที่ว่างในระบบ
+
+docker run nginx //รัน container จากอิมเมจ nginx ซึ่งจะทำงานเป็นเว็บเซิร์ฟเวอร์ที่พร้อมใช้งานทันที
+
+docker exec -it 2116b5db57bd sh //เข้าสู่ shell ของ container ที่กำลังทำงานอยู่ โดยใช้ container_id ที่ได้จากคำสั่ง docker ps และเปิด interactive terminal เพื่อให้สามารถพิมพ์คำสั่งภายใน container ได้
+
+ls //แสดงรายการไฟล์และโฟลเดอร์ภายใน container ที่เราเข้าสู่ shell อยู่
+
+exit //ออกจาก shell ของ container และกลับสู่ terminal ของเครื่องเรา
+
+docker exit -it <container_id_or_name> bash //เข้าสู่ shell ของ container ที่กำลังทำงานอยู่ โดยใช้ container_id ที่ได้จากคำสั่ง docker ps และเปิด interactive terminal เพื่อให้สามารถพิมพ์คำสั่งภายใน container ได้ โดยใช้ shell เป็น bash แทน sh
+
+cd/user/share/nginx/html //เปลี่ยนไดเรกทอรีภายใน container ไปยังโฟลเดอร์ที่เก็บไฟล์เว็บของ nginx เพื่อทำการแก้ไขหรือเพิ่มไฟล์เว็บใหม่
+
+cat index.html //แสดงเนื้อหาของไฟล์ index.html ที่อยู่ในโฟลเดอร์ของ nginx เพื่อดูว่ามีเนื้อหาอะไรบ้าง หรือเพื่อยืนยันว่าไฟล์นั้นมีอยู่จริงใน container
+
+docker run -p 80:80 nginx //รัน container จากอิมเมจ nginx และ map port 80 ของ host กับ port 80 ของ container เพื่อให้สามารถเข้าถึงเว็บไซต์ได้ผ่าน browser ที่ใช้งานอยู่ในเครื่องเรา
+
+port mysql = 3306 //พอร์ตที่ใช้สำหรับเชื่อมต่อกับฐานข้อมูล MySQL โดยปกติจะใช้พอร์ต 3306 เป็นค่าเริ่มต้นในการเชื่อมต่อกับ MySQL server
+
+docker run -d -p 8000:80 nginx //รัน container จากอิมเมจ nginx ในโหมด detached (ทำงานเบื้องหลัง) และ map port 8000 ของ host กับ port 80 ของ container เพื่อให้สามารถเข้าถึงเว็บไซต์ได้ผ่าน browser ที่ใช้งานอยู่ในเครื่องเรา โดยใช้พอร์ต 8000 แทนพอร์ต 80 ของ host เพื่อหลีกเลี่ยงการชนกับบริการอื่นที่อาจใช้พอร์ต 80 อยู่แล้ว
+
+docker run -p 80:80 nginx //รัน container จากอิมเมจ nginx และ map port 80 ของ host กับ port 80 ของ container เพื่อให้สามารถเข้าถึงเว็บไซต์ได้ผ่าน browser ที่ใช้งานอยู่ในเครื่องเรา โดยใช้พอร์ต 80 แทนพอร์ต 8000 เพื่อให้สามารถเข้าถึงเว็บไซต์ได้ผ่านพอร์ตมาตรฐานของ HTTP
+
+docker image ls //แสดงรายการอิมเมจทั้งหมดที่มีอยู่ในเครื่องของเรา โดยจะแสดงชื่ออิมเมจ, แท็ก, ขนาด และอื่นๆ เพื่อให้เราสามารถจัดการกับอิมเมจได้อย่างมีประสิทธิภาพ
+
+docker image inspect nginx //แสดงรายละเอียดของอิมเมจ nginx เช่น ข้อมูลเกี่ยวกับเลเยอร์ของอิมเมจ, คำสั่งที่ใช้ในการสร้างอิมเมจ, และข้อมูลอื่นๆ ที่เกี่ยวข้องกับอิมเมจนั้น เพื่อให้เราสามารถเข้าใจและจัดการกับอิมเมจได้ดียิ่งขึ้น
+
+docker images //แสดงรายการอิมเมจทั้งหมดที่มีอยู่ในเครื่องของเรา โดยจะแสดงชื่ออิมเมจ, แท็ก, ขนาด และอื่นๆ เพื่อให้เราสามารถจัดการกับอิมเมจได้อย่างมีประสิทธิภาพ
+
+docker pull wordpress //ดึงอิมเมจของ WordPress จาก Docker Hub มาไว้ในเครื่องของเรา เพื่อให้เราสามารถรัน container ของ WordPress ได้ในภายหลัง
+
+docker image rm <image_id_or_name> //ลบอิมเมจที่ไม่ต้องการ โดยใช้ image_id หรือชื่อของอิมเมจที่ได้จากคำสั่ง docker images
+
+docker pull mysql:5.7 //ดึงอิมเมจของ MySQL เวอร์ชัน 5.7 จาก Docker Hub มาไว้ในเครื่องของเรา เพื่อให้เราสามารถรัน container ของ MySQL ได้ในภายหลัง
+
+docker pull phpmyadmin/phpmyadmin //ดึงอิมเมจของ phpMyAdmin จาก Docker Hub มาไว้ในเครื่องของเรา เพื่อให้เราสามารถรัน container ของ phpMyAdmin ได้ในภายหลัง และใช้ในการจัดการฐานข้อมูล MySQL ผ่านเว็บอินเตอร์เฟสได้อย่างสะดวกสบาย
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
